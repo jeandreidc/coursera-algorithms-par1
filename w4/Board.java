@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Board implements Comparable<Board> {
+public class Board {
     private int[][] _tiles;
     private int _size;
     private int[] _emptySpace;
@@ -128,10 +128,6 @@ public class Board implements Comparable<Board> {
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
         return new Board(Arrays.copyOf(_tiles, _tiles.length));
-    }
-
-    public int compareTo(Board b) {
-        return 0;
     }
 
     private void swap(Board board, int[] emptySpace, int x2, int y2) {
