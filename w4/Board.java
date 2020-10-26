@@ -2,16 +2,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private int[][] _tiles;
-    private int _size;
-    private int[] _emptySpace;
+    private final int[][] _tiles;
+    private final int _size;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         _size = tiles.length;
         _tiles = Arrays.copyOf(tiles, tiles.length);
-        _emptySpace = getEmptySpace();
     }
 
     // string representation of this board
@@ -72,7 +70,7 @@ public class Board {
         int correctX = getCorrectX(_tiles[x][y]);
         int correctY = getCorrectY(_tiles[x][y]);
 
-        return Math.abs(x - correctX) + Math.abs(y - correctX);
+        return Math.abs(x - correctX) + Math.abs(y - correctY);
     }
 
     // is this board the goal board?
@@ -96,29 +94,30 @@ public class Board {
     // all neighboring boards
     public Iterable<Board> neighbors() {
         ArrayList<Board> boards = new ArrayList<Board>();
+        int[] emptySpace = getEmptySpace();
 
-        if (_emptySpace[0] - 1 > 0) {
+        if (emptySpace[0] - 1 > 0) {
             Board b = twin();
-            swap(b, _emptySpace, _emptySpace[0] - 1, _emptySpace[1]);
+            swap(b, emptySpace, emptySpace[0] - 1, emptySpace[1]);
             boards.add(b);
         }
 
-        if (_emptySpace[0] + 1 < _size) {
+        if (emptySpace[0] + 1 < _size) {
             Board b = twin();
-            swap(b, _emptySpace, _emptySpace[0] + 1, _emptySpace[1]);
+            swap(b, emptySpace, emptySpace[0] + 1, emptySpace[1]);
             boards.add(b);
 
         }
 
-        if (_emptySpace[0] - 1 > 0) {
+        if (emptySpace[0] - 1 > 0) {
             Board b = twin();
-            swap(b, _emptySpace, _emptySpace[0], _emptySpace[1] - 1);
+            swap(b, emptySpace, emptySpace[0], emptySpace[1] - 1);
             boards.add(b);
         }
 
-        if (_emptySpace[0] + 1 < _size) {
+        if (emptySpace[0] + 1 < _size) {
             Board b = twin();
-            swap(b, _emptySpace, _emptySpace[0], _emptySpace[1] + 1);
+            swap(b, emptySpace, emptySpace[0], emptySpace[1] + 1);
             boards.add(b);
         }
 
@@ -133,7 +132,7 @@ public class Board {
     private void swap(Board board, int[] emptySpace, int x2, int y2) {
         int tempVal = board._tiles[x2][y2];
         board._tiles[x2][y2] = 0;
-        board._tiles[_emptySpace[0]][_emptySpace[1]] = tempVal;
+        board._tiles[emptySpace[0]][emptySpace[1]] = tempVal;
     }
 
     private int getCorrectX(int number) {
@@ -146,7 +145,6 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-
     }
 
 }
