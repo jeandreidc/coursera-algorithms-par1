@@ -6,17 +6,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Solver {
-    private final Board _board;
     private int _numberOfTurns = 0;
-    private MinPQ<BoardNode> _minPQ;
     private ArrayList<Board> _solution;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        _board = initial;
-        _minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
-        _minPQ.insert(new BoardNode(initial, null, 0));
-        solve();
+        solve(initial);
     }
 
     // is the initial board solvable? (see below)
@@ -34,21 +29,23 @@ public class Solver {
         return _solution;
     }
 
-    private void solve() {
+    private void solve(Board initial) {
+        MinPQ<BoardNode> minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
+        minPQ.insert(new BoardNode(initial, null, 0));
         BoardNode currentNode = null;
         _solution = new ArrayList<Board>();
         while (true) {
-            currentNode = _minPQ.delMin();
+            currentNode = minPQ.delMin();
             _solution.add(currentNode.Board);
             if (currentNode.Manhattan == 0) break;
-            int countBeforeNeighbors = _minPQ.size();
+            int countBeforeNeighbors = minPQ.size();
             for (Board neighbor : currentNode.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
-                if (neighborNode.PreviousNode != null && neighborNode.PreviousNode.Board != neighborNode.Board) {
-                    _minPQ.insert(neighborNode);
+                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
+                    minPQ.insert(neighborNode);
                 }
             }
-            if (countBeforeNeighbors == _minPQ.size()) {
+            if (countBeforeNeighbors == minPQ.size()) {
                 _solution = null;
                 _numberOfTurns = -1;
                 return;
@@ -70,7 +67,6 @@ public class Solver {
             this.PreviousNode = previousNode;
             this.Moves = moves;
             this.Manhattan = board.manhattan();
-            this.Hamming = board.hamming();
         }
     }
 

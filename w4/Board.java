@@ -15,7 +15,8 @@ public class Board {
 
     // string representation of this board
     public String toString() {
-        StringBuilder sb = new StringBuilder(_size);
+        StringBuilder sb = new StringBuilder();
+        sb.append(_size);
         for (int i = 0; i < _size; i++) {
             sb.append("\n");
             for (int j = 0; j < _size; j++) {
@@ -81,6 +82,7 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
+        if (y == null) return false;
         Board board2 = (Board) y;
         if (_size != board2._tiles.length) return false;
 
@@ -149,9 +151,4 @@ public class Board {
     private int getCorrectY(int number) {
         return (number - 1) / _size;
     }
-
-    // unit testing (not graded)
-    public static void main(String[] args) {
-    }
-
 }
