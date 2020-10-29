@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class Board {
     private final int[][] _tiles;
     private final int _size;
@@ -66,9 +67,9 @@ public class Board {
     }
 
     private int manhattanSingle(int x, int y) {
-        if (_tiles[x][y] == 0) return 0;
-        int correctX = getCorrectX(_tiles[x][y]);
-        int correctY = getCorrectY(_tiles[x][y]);
+        if (_tiles[y][x] == 0) return 0;
+        int correctX = getCorrectX(_tiles[y][x]);
+        int correctY = getCorrectY(_tiles[y][x]);
 
         return Math.abs(x - correctX) + Math.abs(y - correctY);
     }
@@ -96,7 +97,7 @@ public class Board {
         ArrayList<Board> boards = new ArrayList<Board>();
         int[] emptySpace = getEmptySpace();
 
-        if (emptySpace[0] - 1 > 0) {
+        if (emptySpace[0] - 1 >= 0) {
             Board b = twin();
             swap(b, emptySpace, emptySpace[0] - 1, emptySpace[1]);
             boards.add(b);
@@ -106,27 +107,33 @@ public class Board {
             Board b = twin();
             swap(b, emptySpace, emptySpace[0] + 1, emptySpace[1]);
             boards.add(b);
-
         }
 
-        if (emptySpace[0] - 1 > 0) {
+        if (emptySpace[1] - 1 >= 0) {
             Board b = twin();
             swap(b, emptySpace, emptySpace[0], emptySpace[1] - 1);
             boards.add(b);
         }
 
-        if (emptySpace[0] + 1 < _size) {
+        if (emptySpace[1] + 1 < _size) {
             Board b = twin();
             swap(b, emptySpace, emptySpace[0], emptySpace[1] + 1);
             boards.add(b);
         }
-
         return boards;
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return new Board(Arrays.copyOf(_tiles, _tiles.length));
+        int[][] myInt = new int[_tiles.length][];
+        for (int i = 0; i < _tiles.length; i++) {
+            int[] aMatrix = _tiles[i];
+            int aLength = aMatrix.length;
+            myInt[i] = new int[aLength];
+            System.arraycopy(aMatrix, 0, myInt[i], 0, aLength);
+        }
+
+        return new Board(myInt);
     }
 
     private void swap(Board board, int[] emptySpace, int x2, int y2) {
