@@ -8,6 +8,8 @@ public class Board {
     private final int[][] _tiles;
     private final int _size;
     private int _hamming = -1, _manhattan = -1;
+    private int _twinCoords1X = -1, _twinCoords1Y = -1, _twinCoords2X = -1, _twinCoords2Y = -1;
+    private int _emptySpaceX = -1, _emptySpaceY = -1;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -31,14 +33,16 @@ public class Board {
     }
 
     private int[] getEmptySpace() {
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                if (_tiles[i][j] == 0) {
-                    return new int[]{i, j};
+        if (_emptySpaceX < 0 || _emptySpaceY < 0)
+            for (int i = 0; i < _size; i++) {
+                for (int j = 0; j < _size; j++) {
+                    if (_tiles[i][j] == 0) {
+                        _emptySpaceY = i;
+                        _emptySpaceX = j;
+                    }
                 }
             }
-        }
-        return new int[2];
+        return new int[]{_emptySpaceY, _emptySpaceX};
     }
 
     // board dimension n
@@ -91,7 +95,7 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        if (y == null) return false;
+        if (y == null || !(y instanceof Board)) return false;
         Board board2 = (Board) y;
         if (_size != board2._tiles.length) return false;
 
@@ -150,19 +154,20 @@ public class Board {
     public Board twin() {
         Board dup = duplicate();
 
-        StdRandom.uniform();
-        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-
-        while (x1 == x2 || y1 == y2 || dup._tiles[y1][x1] == 0 || dup._tiles[y2][x2] == 0) {
-            x1 = StdRandom.uniform(_size);
-            x2 = StdRandom.uniform(_size);
-            y1 = StdRandom.uniform(_size);
-            y2 = StdRandom.uniform(_size);
+        if (_twinCoords1X < 0 || _twinCoords1Y < 0 || _twinCoords2X < 0 || _twinCoords2Y < 0) {
+            while (_twinCoords1X == _twinCoords2X || _twinCoords1Y == _twinCoords2Y ||
+                    dup._tiles[_twinCoords1Y][_twinCoords1X] == 0 || dup._tiles[_twinCoords2Y][_twinCoords2X] == 0) {
+                _twinCoords1X = StdRandom.uniform(_size);
+                _twinCoords2X = StdRandom.uniform(_size);
+                _twinCoords1Y = StdRandom.uniform(_size);
+                _twinCoords2Y = StdRandom.uniform(_size);
+            }
         }
 
-        int val = dup._tiles[y1][x1];
-        dup._tiles[y1][x1] = dup._tiles[y2][x2];
-        dup._tiles[y2][x2] = val;
+
+        int val = dup._tiles[_twinCoords1Y][_twinCoords1X];
+        dup._tiles[_twinCoords1Y][_twinCoords1X] = dup._tiles[_twinCoords2Y][_twinCoords2X];
+        dup._tiles[_twinCoords2Y][_twinCoords2X] = val;
         return dup;
     }
 
