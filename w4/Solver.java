@@ -11,6 +11,7 @@ public class Solver {
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        if (initial == null) throw new IllegalArgumentException();
         solve(initial);
     }
 
@@ -73,11 +74,13 @@ public class Solver {
 
     private class BoardNode {
         public int Moves;
+        public int Manhattan;
         public Board Board;
         public BoardNode PreviousNode;
 
         public BoardNode(Board board, BoardNode previousNode, int moves) {
             this.Board = board;
+            this.Manhattan = board.manhattan();
             this.PreviousNode = previousNode;
             this.Moves = moves;
         }
@@ -85,7 +88,7 @@ public class Solver {
 
     private class BoardComparatorManhattan implements Comparator<BoardNode> {
         public int compare(BoardNode b1, BoardNode b2) {
-            return (b1.Board.manhattan() + b1.Moves) - (b2.Board.manhattan() + b2.Moves);
+            return (b1.Manhattan + b1.Moves) - (b2.Manhattan + b2.Moves);
         }
     }
 
