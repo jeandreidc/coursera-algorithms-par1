@@ -153,7 +153,7 @@ public class Board {
         StdRandom.uniform();
         int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-        while (x1 == x2 || y1 == y2) {
+        while (x1 == x2 || y1 == y2 || dup._tiles[y1][x1] == 0 || dup._tiles[y2][x2] == 0) {
             x1 = StdRandom.uniform(_size);
             x2 = StdRandom.uniform(_size);
             y1 = StdRandom.uniform(_size);
