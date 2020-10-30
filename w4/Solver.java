@@ -52,15 +52,14 @@ public class Solver {
             }
 
             for (Board neighbor : currentNode.Board.neighbors()) {
-                BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
-                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
-                    minPQ.insert(neighborNode);
+                if (currentNode.PreviousNode == null || !currentNode.PreviousNode.Board.equals(neighbor) && !currentNode.Board.equals(neighbor)) {
+                    minPQ.insert(new BoardNode(neighbor, currentNode, currentNode.Moves + 1));
                 }
             }
+
             for (Board neighbor : currentNodeTwin.Board.neighbors()) {
-                BoardNode neighborNode = new BoardNode(neighbor, currentNodeTwin, currentNodeTwin.Moves + 1);
-                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
-                    minPQTwin.insert(neighborNode);
+                if (currentNodeTwin.PreviousNode == null || !currentNodeTwin.PreviousNode.Board.equals(neighbor) && !currentNodeTwin.Board.equals(neighbor)) {
+                    minPQTwin.insert(new BoardNode(neighbor, currentNodeTwin, currentNodeTwin.Moves + 1));
                 }
             }
         }
