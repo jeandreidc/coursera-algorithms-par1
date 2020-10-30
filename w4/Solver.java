@@ -41,7 +41,7 @@ public class Solver {
         while (true) {
             currentNode = minPQ.delMin();
             _solution.add(currentNode.Board);
-            if (currentNode.Board.manhattan() == 0) break;
+            if (currentNode.Board.isGoal()) break;
             minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
 
             for (Board neighbor : currentNode.Board.neighbors()) {
@@ -53,7 +53,7 @@ public class Solver {
 
             currentNodeTwin = minPQTwin.delMin();
             _solution.add(currentNodeTwin.Board);
-            if (currentNodeTwin.Board.manhattan() == 0) {
+            if (currentNodeTwin.Board.isGoal()) {
                 _solution = null;
                 _numberOfTurns = -1;
                 return;
@@ -62,7 +62,7 @@ public class Solver {
 
             for (Board neighbor : currentNodeTwin.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNodeTwin, currentNodeTwin.Moves + 1);
-                if (neighborNode.PreviousNode != null && !currentNodeTwin.Board.equals(neighborNode.Board)) {
+                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
                     minPQTwin.insert(neighborNode);
                 }
             }
