@@ -53,7 +53,7 @@ public class Solver {
 
             for (Board neighbor : currentNode.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
-                if (neighborNode.PreviousNode != null && !currentNode.Board.equals(neighborNode.Board)) {
+                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
                     minPQ.insert(neighborNode);
                 }
             }
