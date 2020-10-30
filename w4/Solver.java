@@ -31,24 +31,40 @@ public class Solver {
 
     private void solve(Board initial) {
         MinPQ<BoardNode> minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
+        MinPQ<BoardNode> minPQTwin = new MinPQ<BoardNode>(new BoardComparatorManhattan());
         minPQ.insert(new BoardNode(initial, null, 0));
+        minPQTwin.insert(new BoardNode(initial.twin(), null, 0));
+
         BoardNode currentNode = null;
+        BoardNode currentNodeTwin = null;
         _solution = new ArrayList<Board>();
         while (true) {
             currentNode = minPQ.delMin();
             _solution.add(currentNode.Board);
             if (currentNode.Board.manhattan() == 0) break;
-            int countBeforeNeighbors = minPQ.size();
+            minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
+
             for (Board neighbor : currentNode.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
-                if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
+                if (neighborNode.PreviousNode != null && !currentNode.Board.equals(neighborNode.Board)) {
                     minPQ.insert(neighborNode);
                 }
             }
-            if (countBeforeNeighbors == minPQ.size()) {
+
+            currentNodeTwin = minPQTwin.delMin();
+            _solution.add(currentNodeTwin.Board);
+            if (currentNodeTwin.Board.manhattan() == 0) {
                 _solution = null;
                 _numberOfTurns = -1;
                 return;
+            }
+            minPQTwin = new MinPQ<BoardNode>(new BoardComparatorManhattan());
+
+            for (Board neighbor : currentNodeTwin.Board.neighbors()) {
+                BoardNode neighborNode = new BoardNode(neighbor, currentNodeTwin, currentNodeTwin.Moves + 1);
+                if (neighborNode.PreviousNode != null && !currentNodeTwin.Board.equals(neighborNode.Board)) {
+                    minPQTwin.insert(neighborNode);
+                }
             }
         }
 
@@ -73,7 +89,7 @@ public class Solver {
         }
     }
 
-    // test client (see below)
+    // test client (see below)(
     public static void main(String[] args) {
         if (args == null) throw new IllegalArgumentException();
 
@@ -86,7 +102,6 @@ public class Solver {
                 tiles[i][j] = in.readInt();
 
         Board initial = new Board(tiles);
-
         // solve the puzzle
         Solver solver = new Solver(initial);
 

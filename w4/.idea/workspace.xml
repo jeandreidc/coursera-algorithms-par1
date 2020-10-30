@@ -55,4 +55,14 @@
       </method>
     </configuration>
   </component>
+  <component name="WindowStateProjectService">
+    <state x="206" y="140" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604089826769">
+      <screen x="0" y="0" width="1500" height="970" />
+    </state>
+    <state x="206" y="140" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1500.970@0.0.1500.970" timestamp="1604089826769" />
+    <state x="481" y="276" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1604089819178">
+      <screen x="0" y="0" width="1500" height="970" />
+    </state>
+    <state x="481" y="276" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1500.970@0.0.1500.970" timestamp="1604089819178" />
+  </component>
 </project>

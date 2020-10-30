@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -107,25 +109,25 @@ public class Board {
         int[] emptySpace = getEmptySpace();
 
         if (emptySpace[0] - 1 >= 0) {
-            Board b = twin();
+            Board b = duplicate();
             swap(b, emptySpace, emptySpace[0] - 1, emptySpace[1]);
             boards.add(b);
         }
 
         if (emptySpace[0] + 1 < _size) {
-            Board b = twin();
+            Board b = duplicate();
             swap(b, emptySpace, emptySpace[0] + 1, emptySpace[1]);
             boards.add(b);
         }
 
         if (emptySpace[1] - 1 >= 0) {
-            Board b = twin();
+            Board b = duplicate();
             swap(b, emptySpace, emptySpace[0], emptySpace[1] - 1);
             boards.add(b);
         }
 
         if (emptySpace[1] + 1 < _size) {
-            Board b = twin();
+            Board b = duplicate();
             swap(b, emptySpace, emptySpace[0], emptySpace[1] + 1);
             boards.add(b);
         }
@@ -133,7 +135,7 @@ public class Board {
     }
 
     // a board that is obtained by exchanging any pair of tiles
-    public Board twin() {
+    private Board duplicate() {
         int[][] myInt = new int[_tiles.length][];
         for (int i = 0; i < _tiles.length; i++) {
             int[] aMatrix = _tiles[i];
@@ -141,8 +143,27 @@ public class Board {
             myInt[i] = new int[aLength];
             System.arraycopy(aMatrix, 0, myInt[i], 0, aLength);
         }
-
+        StdRandom.uniform();
         return new Board(myInt);
+    }
+
+    public Board twin() {
+        Board dup = duplicate();
+
+        StdRandom.uniform();
+        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+
+        while (x1 == x2 || y1 == y2) {
+            x1 = StdRandom.uniform(_size);
+            x2 = StdRandom.uniform(_size);
+            y1 = StdRandom.uniform(_size);
+            y2 = StdRandom.uniform(_size);
+        }
+
+        int val = dup._tiles[y1][x1];
+        dup._tiles[y1][x1] = dup._tiles[y2][x2];
+        dup._tiles[y2][x2] = val;
+        return dup;
     }
 
     private void swap(Board board, int[] emptySpace, int x2, int y2) {
