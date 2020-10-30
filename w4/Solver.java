@@ -37,7 +37,7 @@ public class Solver {
         while (true) {
             currentNode = minPQ.delMin();
             _solution.add(currentNode.Board);
-            if (currentNode.Manhattan == 0) break;
+            if (currentNode.Board.manhattan() == 0) break;
             int countBeforeNeighbors = minPQ.size();
             for (Board neighbor : currentNode.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
@@ -58,21 +58,18 @@ public class Solver {
     private class BoardNode {
         public int Moves;
         public Board Board;
-        public int Manhattan;
-        public int Hamming;
         public BoardNode PreviousNode;
 
         public BoardNode(Board board, BoardNode previousNode, int moves) {
             this.Board = board;
             this.PreviousNode = previousNode;
             this.Moves = moves;
-            this.Manhattan = board.manhattan();
         }
     }
 
     private class BoardComparatorManhattan implements Comparator<BoardNode> {
         public int compare(BoardNode b1, BoardNode b2) {
-            return (b1.Manhattan + b1.Moves) - (b2.Manhattan + b2.Moves);
+            return (b1.Board.manhattan() + b1.Moves) - (b2.Board.manhattan() + b2.Moves);
         }
     }
 

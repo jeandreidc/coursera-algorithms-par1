@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class Board {
     private final int[][] _tiles;
     private final int _size;
+    private int _hamming = -1, _manhattan = -1;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -45,26 +46,32 @@ public class Board {
 
     // number of tiles out of place
     public int hamming() {
-        int count = 0;
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                if (manhattanSingle(i, j) > 0) {
-                    count++;
+        if (_hamming < 0) {
+            int count = 0;
+            for (int i = 0; i < _size; i++) {
+                for (int j = 0; j < _size; j++) {
+                    if (manhattanSingle(i, j) > 0) {
+                        count++;
+                    }
                 }
             }
+            _hamming = count;
         }
-        return count;
+        return _hamming;
     }
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
-        int sum = 0;
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                sum += manhattanSingle(i, j);
+        if (_manhattan < 0) {
+            int sum = 0;
+            for (int i = 0; i < _size; i++) {
+                for (int j = 0; j < _size; j++) {
+                    sum += manhattanSingle(i, j);
+                }
             }
+            _manhattan = sum;
         }
-        return sum;
+        return _manhattan;
     }
 
     private int manhattanSingle(int x, int y) {
