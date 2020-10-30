@@ -43,7 +43,13 @@ public class Solver {
             currentNode = minPQ.delMin();
             _solution.add(currentNode.Board);
             if (currentNode.Board.isGoal()) break;
-            minPQ = new MinPQ<BoardNode>(new BoardComparatorManhattan());
+
+            currentNodeTwin = minPQTwin.delMin();
+            if (currentNodeTwin.Board.isGoal()) {
+                _solution = null;
+                _numberOfTurns = -1;
+                return;
+            }
 
             for (Board neighbor : currentNode.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNode, currentNode.Moves + 1);
@@ -51,16 +57,6 @@ public class Solver {
                     minPQ.insert(neighborNode);
                 }
             }
-
-            currentNodeTwin = minPQTwin.delMin();
-            _solution.add(currentNodeTwin.Board);
-            if (currentNodeTwin.Board.isGoal()) {
-                _solution = null;
-                _numberOfTurns = -1;
-                return;
-            }
-            minPQTwin = new MinPQ<BoardNode>(new BoardComparatorManhattan());
-
             for (Board neighbor : currentNodeTwin.Board.neighbors()) {
                 BoardNode neighborNode = new BoardNode(neighbor, currentNodeTwin, currentNodeTwin.Moves + 1);
                 if (neighborNode.PreviousNode != null && !neighborNode.PreviousNode.Board.equals(neighborNode.Board)) {
@@ -68,7 +64,6 @@ public class Solver {
                 }
             }
         }
-
         _numberOfTurns = currentNode.Moves;
     }
 
