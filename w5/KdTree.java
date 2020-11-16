@@ -75,7 +75,7 @@ public class KdTree {
         if(pn == null || pn._point.compareTo(p) == 0) return pn;
         if(!pn._rect.contains(p)) return null;
 
-        if(pn.compareTo(p) < 0)
+        if(pn.compareTo(p) <= 0)
             return search(pn._right, p);
 
         return search(pn._left, p);
@@ -127,6 +127,8 @@ public class KdTree {
     public Point2D nearest(Point2D p)    // a nearest neighbor in the set to point p; null if the set is empty
     {
         if (p == null) throw new IllegalArgumentException();
+
+        if(_root == null) return null;
         Point2D champion = p;
         recursiveSearch(_root, p, champion);
         return champion;
