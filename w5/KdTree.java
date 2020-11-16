@@ -20,7 +20,7 @@ public class KdTree {
     public void insert(Point2D p)     // add the point to the set (if it is not already in the set)
     {
         if(_root == null) {
-            _root = new PointNode(p, 1, true, new RectH);
+            _root = new PointNode(p, 1, true);
             return;
         }
         kdTreeInsert(_root, p, !_root._isX);
@@ -104,13 +104,11 @@ public class KdTree {
         private int _size;
         private boolean _isX;
         private PointNode _left, _right;
-        private RectHV _rect;
 
-        private PointNode(Point2D p, int size, boolean isX, RectHV rect) {
+        private PointNode(Point2D p, int size, boolean isX) {
             _point = p;
             _size = size;
             _isX = isX;
-            _rect = rect;
         }
 
         public int compareTo(Point2D pn) {
