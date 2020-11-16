@@ -7,4 +7,94 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FindBugs-IDEA-Workspace">
+    <toolWindowEditorPreview>false</toolWindowEditorPreview>
+  </component>
+  <component name="ProjectId" id="1kL5rMSJGo8rkClktVy8jlEixGt" />
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showModules" value="false" />
+    <option name="sortByType" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Algorithmsp1" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="15" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+      <option name="MAIN_CLASS_NAME" value="C:\Users\andre\Documents\DelaCraft\coursera-algorithms-part1\w5\Main.java" />
+      <module name="w5" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="736" y="359" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605485556910">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state x="736" y="359" key="#com.intellij.execution.impl.EditConfigurationsDialog/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485556910" />
+    <state x="1061" y="409" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1605485294046">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state x="1061" y="409" key="#com.intellij.ide.macro.MacrosDialog/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485294046" />
+    <state x="1011" y="494" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1605485534969">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state x="1011" y="494" key="#com.intellij.ide.util.TreeClassChooserDialog/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485534969" />
+    <state x="1061" y="459" key="FileChooserDialogImpl" timestamp="1605485271461">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state x="1061" y="459" key="FileChooserDialogImpl/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485271461" />
+    <state width="2561" height="516" key="GridCell.Tab.0.bottom" timestamp="1605485597304">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.0.bottom/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597304" />
+    <state width="2561" height="516" key="GridCell.Tab.0.center" timestamp="1605485597304">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.0.center/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597304" />
+    <state width="2561" height="516" key="GridCell.Tab.0.left" timestamp="1605485597304">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.0.left/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597304" />
+    <state width="2561" height="516" key="GridCell.Tab.0.right" timestamp="1605485597304">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.0.right/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597304" />
+    <state width="2561" height="516" key="GridCell.Tab.1.bottom" timestamp="1605485597305">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.1.bottom/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597305" />
+    <state width="2561" height="516" key="GridCell.Tab.1.center" timestamp="1605485597305">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.1.center/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597305" />
+    <state width="2561" height="516" key="GridCell.Tab.1.left" timestamp="1605485597305">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.1.left/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597305" />
+    <state width="2561" height="516" key="GridCell.Tab.1.right" timestamp="1605485597305">
+      <screen x="0" y="0" width="2560" height="1409" />
+    </state>
+    <state width="2561" height="516" key="GridCell.Tab.1.right/3840.0.1500.977/0.0.2560.1409@0.0.2560.1409" timestamp="1605485597305" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/KdTree.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
