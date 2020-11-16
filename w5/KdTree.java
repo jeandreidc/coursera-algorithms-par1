@@ -29,7 +29,6 @@ public class KdTree {
             _root = new PointNode(p, 1, true, new RectHV(0.0, 0.0, 1.0, 1.0));
             return;
         }
-        if(contains(p)) return;
         kdTreeInsert(_root, p, !_root._isX, null);
     }
 
@@ -128,44 +127,38 @@ public class KdTree {
     {
         if (p == null) throw new IllegalArgumentException();
 
-        if(_root == null) return null;
-        Point2D champion = p;
-        recursiveSearch(_root, p, champion);
-        return champion;
+        double minDistance = -1;
+        recursiveSearch(_root, p, minDistance);
+        return _champion;
     }
 
-    private void recursiveSearch(PointNode pn, Point2D p, Point2D champion){
-        if (pn == null) return;
+    private Point2D _champion = null;
+    private void recursiveSearch(PointNode pn, Point2D p, double minDistance){
+        if (pn == null || (minDistance != -1 && pn._rect.distanceTo(p) > minDistance)) return;
 
-        if(p.distanceTo(pn._point) < p.distanceTo(champion)) {
-            champion = pn._point;
+        double distance =  p.distanceTo(pn._point);
+        if (minDistance == -1 || distance < minDistance) {
+            minDistance = distance;
+            _champion = new Point2D(pn._point.x(), pn._point.y());
         }
-
-        recursiveSearch(pn._left, p, champion);
-        recursiveSearch(pn._right, p, champion);
+        recursiveSearch(pn._left, p, minDistance);
+        recursiveSearch(pn._right, p, minDistance   );
     }
 
     public static void main(String[] args)// unit testing of the methods (optional)
     {
-        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
-        StdDraw.enableDoubleBuffering();
+
+        // initialize the two data structures with point from file
+        String filename = args[0];
+        In in = new In(filename);
         KdTree kdtree = new KdTree();
-        while (true) {
-            if (StdDraw.isMousePressed()) {
-                double x = StdDraw.mouseX();
-                double y = StdDraw.mouseY();
-                StdOut.printf("%8.6f %8.6f\n", x, y);
-                Point2D p = new Point2D(x, y);
-                if (rect.contains(p)) {
-                    StdOut.printf("%8.6f %8.6f\n", x, y);
-                    kdtree.insert(p);
-                    StdDraw.clear();
-                    kdtree.draw();
-                    StdDraw.show();
-                }
-            }
-            StdDraw.pause(20);
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D p = new Point2D(x, y);
+            kdtree.insert(p);
         }
+        StdOut.println(kdtree.nearest(new Point2D(0.744, 0.288)));
 
     }
 
