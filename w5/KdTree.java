@@ -40,8 +40,8 @@ public class KdTree {
             return new PointNode(p, 1, isX, rectangle);
         }
 
-        if(pn.compareTo(p) >= 0) pn._left = kdTreeInsert(pn._left, p, !pn._isX, computeRectangle(false, pn));
-        else if(pn.compareTo(p) < 0) pn._right = kdTreeInsert(pn._right, p, !pn._isX, computeRectangle(true, pn));
+        if(pn.compareTo(p) > 0) pn._left = kdTreeInsert(pn._left, p, !pn._isX, computeRectangle(false, pn));
+        else if(pn.compareTo(p) <= 0) pn._right = kdTreeInsert(pn._right, p, !pn._isX, computeRectangle(true, pn));
 
         pn._size = size(pn._right) + size(pn._left) + 1;
         return pn;
@@ -145,19 +145,25 @@ public class KdTree {
 
     public static void main(String[] args)// unit testing of the methods (optional)
     {
-        KdTree kdTree = new KdTree();
-        kdTree.insert(new Point2D(0.5, 0.5));
-        kdTree.insert(new Point2D(0.25, 0.5));
-        kdTree.insert(new Point2D(0.15, 0.65));
-        kdTree.insert(new Point2D(0.35, 0.5));
-        kdTree.insert(new Point2D(0.15, 0.5));
-        kdTree.insert(new Point2D(0.15, 0.55));
-        kdTree.insert(new Point2D(0.53, 0.5));
-
-        /*
-        StdOut.println(kdTree.contains(new Point2D(0.35, 0.5)));
-        StdOut.println(kdTree.size());
-        kdTree.printAll(kdTree._root);*/
+        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
+        StdDraw.enableDoubleBuffering();
+        KdTree kdtree = new KdTree();
+        while (true) {
+            if (StdDraw.isMousePressed()) {
+                double x = StdDraw.mouseX();
+                double y = StdDraw.mouseY();
+                StdOut.printf("%8.6f %8.6f\n", x, y);
+                Point2D p = new Point2D(x, y);
+                if (rect.contains(p)) {
+                    StdOut.printf("%8.6f %8.6f\n", x, y);
+                    kdtree.insert(p);
+                    StdDraw.clear();
+                    kdtree.draw();
+                    StdDraw.show();
+                }
+            }
+            StdDraw.pause(20);
+        }
 
     }
 
