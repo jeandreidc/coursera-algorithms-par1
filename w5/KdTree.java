@@ -1,4 +1,8 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
 public class KdTree {
