@@ -19,7 +19,7 @@ public class KdTree {
     public int size()       // number of points in the set
     {
         if(_root == null) return 0;
-        return _root._size;
+        return size(_root);
     }
 
     public void insert(Point2D p)     // add the point to the set (if it is not already in the set)
@@ -29,17 +29,18 @@ public class KdTree {
             _root = new PointNode(p, 1, true, new RectHV(0.0, 0.0, 1.0, 1.0));
             return;
         }
+        if(contains(p)) return;
         kdTreeInsert(_root, p, !_root._isX, null);
     }
 
     private PointNode kdTreeInsert(PointNode pn, Point2D p, boolean isX, RectHV rectangle)
     {
         if(pn == null){
-           // StdOut.printf("INSERTED Point (%f, %f) %s\n", p.x(), p.y(), isX ? "X" : "Y");
+          // StdOut.printf("INSERTED Point (%f, %f) %s\n", p.x(), p.y(), isX ? "X" : "Y");
             return new PointNode(p, 1, isX, rectangle);
         }
 
-        if(pn.compareTo(p) > 0) pn._left = kdTreeInsert(pn._left, p, !pn._isX, computeRectangle(false, pn));
+        if(pn.compareTo(p) >= 0) pn._left = kdTreeInsert(pn._left, p, !pn._isX, computeRectangle(false, pn));
         else if(pn.compareTo(p) < 0) pn._right = kdTreeInsert(pn._right, p, !pn._isX, computeRectangle(true, pn));
 
         pn._size = size(pn._right) + size(pn._left) + 1;
@@ -67,9 +68,26 @@ public class KdTree {
     public boolean contains(Point2D p)   // does the set contain point p?
     {
         if (p == null) throw new IllegalArgumentException();
-        if (_root == null) return  false;
-        return _root._rect.contains(p);
+        return search(_root, p) != null;
     }
+
+    private PointNode search(PointNode pn, Point2D p) {
+        if(pn == null || pn._point.compareTo(p) == 0) return pn;
+        if(!pn._rect.contains(p)) return null;
+
+        if(pn.compareTo(p) < 0)
+            return search(pn._right, p);
+
+        return search(pn._left, p);
+    }
+
+    private void printAll(PointNode pn) {
+        if(pn == null) return;
+        printAll(pn._left);
+        StdOut.printf("point (%f, %f)\n", pn._point.x(), pn._point.y());
+        printAll(pn._right);
+    }
+
 
     public void draw()       // draw all points to standard draw
     {
@@ -80,7 +98,6 @@ public class KdTree {
     private void traverseDraw(PointNode p) {
         if (p == null) return;
         traverseDraw(p._left);
-
         StdDraw.setPenColor(StdDraw.BLUE);
         if(p._isX) StdDraw.setPenColor(StdDraw.RED);
         p._point.draw();
@@ -128,46 +145,20 @@ public class KdTree {
 
     public static void main(String[] args)// unit testing of the methods (optional)
     {
-        // initialize the two data structures with point from file
-        String filename = args[0];
-        In in = new In(filename);
-        PointSET brute = new PointSET();
-        KdTree kdtree = new KdTree();
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D p = new Point2D(x, y);
-            kdtree.insert(p);
-            brute.insert(p);
-        }
+        KdTree kdTree = new KdTree();
+        kdTree.insert(new Point2D(0.5, 0.5));
+        kdTree.insert(new Point2D(0.25, 0.5));
+        kdTree.insert(new Point2D(0.15, 0.65));
+        kdTree.insert(new Point2D(0.35, 0.5));
+        kdTree.insert(new Point2D(0.15, 0.5));
+        kdTree.insert(new Point2D(0.15, 0.55));
+        kdTree.insert(new Point2D(0.53, 0.5));
 
-        // process nearest neighbor queries
-        StdDraw.enableDoubleBuffering();
-        while (true) {
+        /*
+        StdOut.println(kdTree.contains(new Point2D(0.35, 0.5)));
+        StdOut.println(kdTree.size());
+        kdTree.printAll(kdTree._root);*/
 
-            // the location (x, y) of the mouse
-            double x = StdDraw.mouseX();
-            double y = StdDraw.mouseY();
-            Point2D query = new Point2D(x, y);
-
-            // draw all of the points
-            StdDraw.clear();
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(0.01);
-            brute.draw();
-
-            // draw in red the nearest neighbor (using brute-force algorithm)
-            StdDraw.setPenRadius(0.03);
-            StdDraw.setPenColor(StdDraw.RED);
-            brute.nearest(query).draw();
-            StdDraw.setPenRadius(0.02);
-
-            // draw in blue the nearest neighbor (using kd-tree algorithm)
-            StdDraw.setPenColor(StdDraw.BLUE);
-            kdtree.nearest(query).draw();
-            StdDraw.show();
-            StdDraw.pause(40);
-        }
     }
 
     private class PointNode implements Comparable<Point2D> {
@@ -185,9 +176,9 @@ public class KdTree {
         }
 
         public int compareTo(Point2D pn) {
-            double diff = _isX ? _point.x() - pn.x() : _point.y() - pn.y();
+            double diff = _isX ?_point.x() - pn.x() : _point.y() - pn.y();
 
-            if (diff != 0.0) return diff > 0.0 ? 1 : -1;
+            if (diff != 0) return diff > 0 ? 1 : -1;
             return 0;
         }
     }
