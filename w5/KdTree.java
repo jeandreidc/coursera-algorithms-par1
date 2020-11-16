@@ -20,6 +20,7 @@ public class KdTree {
 
     public void insert(Point2D p)     // add the point to the set (if it is not already in the set)
     {
+        if (p == null) throw new IllegalArgumentException();
         if(_root == null) {
             _root = new PointNode(p, 1, true, new RectHV(0.0, 0.0, 1.0, 1.0));
             return;
@@ -61,6 +62,7 @@ public class KdTree {
 
     public boolean contains(Point2D p)   // does the set contain point p?
     {
+        if (p == null) throw new IllegalArgumentException();
         if (_root == null) return  false;
         return _root._rect.contains(p);
     }
@@ -83,6 +85,7 @@ public class KdTree {
 
     public Iterable<Point2D> range(RectHV rect)    // all points that are inside the rectangle (or on the boundary)
     {
+        if (rect == null) throw new IllegalArgumentException();
         ArrayList<Point2D> points = new ArrayList<Point2D>();
         checkForPointIntersections(_root, rect, points);
         return points;
@@ -102,6 +105,7 @@ public class KdTree {
 
     public Point2D nearest(Point2D p)    // a nearest neighbor in the set to point p; null if the set is empty
     {
+        if (p == null) throw new IllegalArgumentException();
         Point2D champion = p;
         recursiveSearch(_root, p, champion);
         return champion;

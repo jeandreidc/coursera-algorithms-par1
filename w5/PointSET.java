@@ -42,12 +42,14 @@ public class PointSET {
 
     public void insert(Point2D p)      // add the point to the set (if it is not already in the set)
     {
+        if (p == null) throw new IllegalArgumentException();
         PointNode pn = new PointNode(p);
         _treeSet.add(pn);
     }
 
     public boolean contains(Point2D p)    // does the set contain point p?
     {
+        if (p == null) throw new IllegalArgumentException();
         return _treeSet.contains(new PointNode(p));
     }
 
@@ -61,6 +63,7 @@ public class PointSET {
 
     public Iterable<Point2D> range(RectHV rect)     // all points that are inside the rectangle (or on the boundary)
     {
+        if (rect == null) throw new IllegalArgumentException();
         ArrayList<Point2D> points = new ArrayList<Point2D>();
         for (PointNode pn : _treeSet) {
             if (rect.contains(pn._point)) {
@@ -72,6 +75,7 @@ public class PointSET {
 
     public Point2D nearest(Point2D p)     // a nearest neighbor in the set to point p; null if the set is empty
     {
+        if (p == null) throw new IllegalArgumentException();
         Point2D champion = null;
         for (PointNode pn : _treeSet) {
             if (champion == null || distance(p, pn._point) < distance(p, champion)) {
