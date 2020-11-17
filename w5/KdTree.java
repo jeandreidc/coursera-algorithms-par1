@@ -102,7 +102,6 @@ public class KdTree {
         StdDraw.setPenColor(StdDraw.BLUE);
         if(p._isX) StdDraw.setPenColor(StdDraw.RED);
         p._rect.draw();
-        StdOut.println(p._rect);
         traverseDraw(p._right);
     }
 
@@ -129,46 +128,38 @@ public class KdTree {
     public Point2D nearest(Point2D p)    // a nearest neighbor in the set to point p; null if the set is empty
     {
         if (p == null) throw new IllegalArgumentException();
-
-        double minDistance = -1;
-        recursiveSearch(_root, p, minDistance);
-        return _champion;
+        return recursiveSearch(_root, p, _root._point);
     }
 
-    private Point2D _champion = null;
-    private void recursiveSearch(PointNode pn, Point2D p, double minDistance){
-        if (pn == null || (minDistance != -1 && pn._rect.distanceTo(p) > minDistance)) return;
+    private Point2D recursiveSearch(PointNode pn, Point2D p, Point2D minimumPoint){
 
-        double distance =  p.distanceTo(pn._point);
-        if (minDistance == -1 || distance < minDistance) {
-            minDistance = distance;
-            _champion = new Point2D(pn._point.x(), pn._point.y());
-        }
-        recursiveSearch(pn._left, p, minDistance);
-        recursiveSearch(pn._right, p, minDistance   );
+        if(pn == null || pn._rect.distanceTo(p) > p.distanceTo(minimumPoint)) return minimumPoint;
+
+        Point2D left = recursiveSearch(pn._left, p, minimumPoint);
+        Point2D right = recursiveSearch(pn._right, p, minimumPoint);
+        Point2D current = pn._point;
+
+        if(left.distanceTo(p) <= right.distanceTo(p) && left.distanceTo(p) <= current.distanceTo(p))
+            return left;
+        else if(right.distanceTo(p) <= left.distanceTo(p) && right.distanceTo(p) <= current.distanceTo(p))
+            return right;
+
+        return current;
     }
 
     public static void main(String[] args)// unit testing of the methods (optional)
     {
-        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
-        StdDraw.enableDoubleBuffering();
+        String filename = args[0];
+        In in = new In(filename);
         KdTree kdtree = new KdTree();
-        while (true) {
-            if (StdDraw.isMousePressed()) {
-                double x = StdDraw.mouseX();
-                double y = StdDraw.mouseY();
-                StdOut.printf("%8.6f %8.6f\n", x, y);
-                Point2D p = new Point2D(x, y);
-                if (rect.contains(p)) {
-                    StdOut.printf("%8.6f %8.6f\n", x, y);
-                    kdtree.insert(p);
-                    StdDraw.clear();
-                    kdtree.draw();
-                    StdDraw.show();
-                }
-            }
-            StdDraw.pause(20);
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D p = new Point2D(x, y);
+            kdtree.insert(p);
         }
+
+        StdOut.println(kdtree.nearest(new Point2D(0.09375, 0.0625)));
     }
 
     private class PointNode implements Comparable<Point2D> {
