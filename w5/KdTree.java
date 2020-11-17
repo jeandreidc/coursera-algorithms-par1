@@ -29,13 +29,14 @@ public class KdTree {
             _root = new PointNode(p, 1, true, new RectHV(0.0, 0.0, 1.0, 1.0));
             return;
         }
+        if(contains(p)) return;
         kdTreeInsert(_root, p, !_root._isX, null);
     }
 
     private PointNode kdTreeInsert(PointNode pn, Point2D p, boolean isX, RectHV rectangle)
     {
         if(pn == null){
-          // StdOut.printf("INSERTED Point (%f, %f) %s\n", p.x(), p.y(), isX ? "X" : "Y");
+            //StdOut.printf("INSERTED Point (%f, %f) %s - " + rectangle + "\n", p.x(), p.y(), isX ? "X" : "Y");
             return new PointNode(p, 1, isX, rectangle);
         }
 
@@ -50,11 +51,11 @@ public class KdTree {
        double xMin = parent._rect.xmin(), yMin = parent._rect.ymin(), xMax = parent._rect.xmax(), yMax = parent._rect.ymax();
 
         if(isMin) {
-            if(parent._isX) xMin = parent._rect.xmin();
-            else yMin = parent._rect.ymin();
+            if(parent._isX) xMin = parent._point.x();
+            else yMin = parent._point.y();
         } else {
-            if(parent._isX) xMax = parent._rect.xmax();
-            else yMax = parent._rect.ymax();
+            if(parent._isX) xMax = parent._point.x();
+            else yMax = parent._point.y();
         }
         return new RectHV(xMin, yMin, xMax, yMax);
     }
@@ -90,16 +91,18 @@ public class KdTree {
 
     public void draw()       // draw all points to standard draw
     {
-        StdDraw.setPenRadius(0.03);
+        StdDraw.setPenRadius(0.01);
         traverseDraw(_root);
     }
 
     private void traverseDraw(PointNode p) {
         if (p == null) return;
         traverseDraw(p._left);
+        p._point.draw();
         StdDraw.setPenColor(StdDraw.BLUE);
         if(p._isX) StdDraw.setPenColor(StdDraw.RED);
-        p._point.draw();
+        p._rect.draw();
+        StdOut.println(p._rect);
         traverseDraw(p._right);
     }
 
@@ -147,19 +150,25 @@ public class KdTree {
 
     public static void main(String[] args)// unit testing of the methods (optional)
     {
-
-        // initialize the two data structures with point from file
-        String filename = args[0];
-        In in = new In(filename);
+        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
+        StdDraw.enableDoubleBuffering();
         KdTree kdtree = new KdTree();
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D p = new Point2D(x, y);
-            kdtree.insert(p);
+        while (true) {
+            if (StdDraw.isMousePressed()) {
+                double x = StdDraw.mouseX();
+                double y = StdDraw.mouseY();
+                StdOut.printf("%8.6f %8.6f\n", x, y);
+                Point2D p = new Point2D(x, y);
+                if (rect.contains(p)) {
+                    StdOut.printf("%8.6f %8.6f\n", x, y);
+                    kdtree.insert(p);
+                    StdDraw.clear();
+                    kdtree.draw();
+                    StdDraw.show();
+                }
+            }
+            StdDraw.pause(20);
         }
-        StdOut.println(kdtree.nearest(new Point2D(0.744, 0.288)));
-
     }
 
     private class PointNode implements Comparable<Point2D> {
@@ -177,7 +186,7 @@ public class KdTree {
         }
 
         public int compareTo(Point2D pn) {
-            double diff = _isX ?_point.x() - pn.x() : _point.y() - pn.y();
+            double diff = _isX ? _point.x() - pn.x() : _point.y() - pn.y();
 
             if (diff != 0) return diff > 0 ? 1 : -1;
             return 0;
